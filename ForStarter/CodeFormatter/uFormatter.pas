@@ -251,7 +251,7 @@ begin
     Exit;
   end;
 
-  ShowMsg(Res);
+  ShowMsg(Res.Replace(Target, Editor.FileName));
 
   // リプレース
   for i := 0 to Editor.EditViewCount - 1 do
