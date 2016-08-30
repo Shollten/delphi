@@ -251,8 +251,6 @@ begin
     Exit;
   end;
 
-  ShowMsg(Res.Replace(Target, Editor.FileName));
-
   // リプレース
   for i := 0 to Editor.EditViewCount - 1 do
   begin
@@ -270,6 +268,8 @@ begin
     EditWriter.Insert(PAnsiChar(AnsiToUtf8(Contents)));
     EditPosition.GotoLine(CurrentLine);
   end;
+
+  ShowMsg(Res.Replace(Target, Editor.FileName));
 end;
 
 var
