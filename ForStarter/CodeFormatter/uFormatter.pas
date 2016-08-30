@@ -19,6 +19,11 @@ type
 
 const
   EXT_PAS = '.PAS';
+  EXT_C = '.C';
+  EXT_CPP = '.CPP';
+  EXT_H = '.H';
+
+  EXT_ARRAY: array [0.. 3] of String = (EXT_PAS, EXT_C, EXT_CPP, EXT_H);
 
   ERR_MSG_INTERFACE =
     'Failed: get interface / Interface の取得に失敗しました';
@@ -141,6 +146,8 @@ var
   EditView: IOTAEditView;
   EditPosition: IOTAEditPosition;
   EditWriter: IOTAEditWriter;
+  TargetExt: String;
+  Ext: String;
   Target: String;
   Formatter: String;
   Res: String;
@@ -167,13 +174,17 @@ begin
   then
   begin
     CurrentEditor := Module.CurrentEditor;
+    TargetExt := ExtractFileExt(CurrentEditor.FileName).ToUpper;
 
-    if
-      (CurrentEditor <> nil) and
-      (TFile.Exists(CurrentEditor.FileName)) and
-      (ExtractFileExt(CurrentEditor.FileName).ToUpper = EXT_PAS)
-    then
-      CurrentEditor.QueryInterface(IOTASourceEditor, Editor);
+    if (CurrentEditor <> nil) and (TFile.Exists(CurrentEditor.FileName)) then
+    begin
+      for Ext in EXT_ARRAY do
+        if Ext = TargetExt then
+        begin
+          CurrentEditor.QueryInterface(IOTASourceEditor, Editor);
+          Break;
+        end;
+    end;
   end;
 
   if (Editor = nil) or (Editor.EditViewCount < 1) then
